@@ -1,0 +1,38 @@
+services:
+  - type: worker
+    name: rsi-worker
+    env: python
+    autoDeploy: true
+    buildCommand: pip install -r requirements.txt
+    startCommand: python worker.py
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: MAX_SYMBOLS_PER_SOURCE
+        value: "1000"
+      - key: BIST_LIST_PATH
+        value: "BİST.txt"
+      - key: MIDAS_LIST_PATH
+        value: "MİDAS COİN YENİ.txt"
+
+  # Optional UI (Streamlit). You can disable if you only need the worker.
+  - type: web
+    name: rsi-ui
+    env: python
+    autoDeploy: false
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.headless true
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: MAX_SYMBOLS_PER_SOURCE
+        value: "1000"
+      - key: BIST_LIST_PATH
+        value: "BİST.txt"
+      - key: MIDAS_LIST_PATH
+        value: "MİDAS COİN YENİ.txt"
+
