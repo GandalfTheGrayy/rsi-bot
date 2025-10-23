@@ -47,12 +47,13 @@ def _telegram_send(text: str) -> None:
 		# Don't crash, just log
 
 
-def notify_if_new(key: str, message: str) -> bool:
+def notify_if_new(key: str, message: str, send_message: bool = True) -> bool:
 	"""Return True if sent, False if duplicate."""
 	sent = _load_sent()
 	if sent.get(key) == message:
 		return False
-	_telegram_send(message)
+	if send_message:
+		_telegram_send(message)
 	sent[key] = message
 	_save_sent(sent)
 	return True
